@@ -1,0 +1,16 @@
+{
+    "FreeBSD 9.1": {
+        "apache22": {
+            "restart": {
+                "type": "command",
+                "command": "apachectl graceful"
+            }
+            "httpd.conf": {
+                "type": "configfile",
+                "configfile": "/usr/local/etc/apache22/httpd.conf"
+            }
+            
+            
+        }
+    }
+}
