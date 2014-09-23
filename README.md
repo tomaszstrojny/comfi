@@ -19,13 +19,13 @@ Using Comfi you will be able to run for example:
 
 `apache22 config main`
 
-And depending on system you have installed it will run suitable command that is assigned to it in commandsFile.
+And depending on system you have installed it will run suitable command that is assigned to it in commands file.
 
-For FreeBSD 9.1 this will be
+For FreeBSD 9.1 this will run:
 
-`/usr/local/etc/apache22/httpd.conf`
+`sudo vim /usr/local/etc/apache22/httpd.conf`
 
 And for CentOS 6.5:
 
-`/etc/httpd/conf/httpd.conf`
+`sudo vim /etc/httpd/conf/httpd.conf`
 
