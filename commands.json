@@ -2,15 +2,31 @@
     "FreeBSD 9.1": {
         "apache22": {
             "restart": {
+                "comment": "Command to restart Apache22 server",
                 "type": "command",
                 "command": "apachectl graceful"
+            },
+            "config": {
+                "main": {
+		    "comment": "Command to edit main Apache22 config file",
+		    "type": "configfile",
+		    "configfile": "/usr/local/etc/apache22/httpd.conf"
+		}
             }
+        }
+    },
+    "CentOS 6.5": {
+        "apache22": {
+            "restart": {
+                "comment": "Command to restart Apache22 server",
+                "type": "command",
+                "command": "apachectl graceful"
+            },
             "httpd.conf": {
+                "comment": "Command to edit main Apache22 config file",
                 "type": "configfile",
-                "configfile": "/usr/local/etc/apache22/httpd.conf"
+                "configfile": "/etc/httpd/conf/httpd.conf"
             }
-            
-            
         }
     }
 }
