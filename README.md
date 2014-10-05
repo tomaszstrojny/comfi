@@ -12,12 +12,12 @@ My goal is to create a tool to use on variety of servers which helps you with:
 * if you have an idea it would be great if you could send me some mail
 
 #### Configuration
-You can config almost everything in `commands_file` (default: `commands.json`) and `config.py`. 
+You can config almost everything in `commands_file` (default: `commands.json`) and `config.py`.
 
 #### How To
 Using Comfi you will be able to run for example:
 
-`apache22 config main`
+`comfi apache22 config main`
 
 And depending on system you have installed it will run suitable command that is assigned to it in commands file.
 
