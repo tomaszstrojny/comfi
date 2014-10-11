@@ -3,6 +3,8 @@ import argparse                     #parsing commandline arguments
 import config                       #import config.py file
 import dataaccess                   #class which is responsible for manipulating the commands_file
 import autoconfig                   #class which can determine some important things and create config file
+import sys
+
 
 class CommandLine:
     def __init__(self, commands_file, action, command):
@@ -49,7 +51,7 @@ parser.add_argument('-f', '--find',
 
 parser.add_argument('-a', '--add',
                     nargs=argparse.REMAINDER,
-                    help='Add command that was found using remaining parameters')
+                    help='Add command that is going to be found using remaining parameters')
 
 parser.add_argument('-d', '--delete',
                     nargs=argparse.REMAINDER,
@@ -57,19 +59,26 @@ parser.add_argument('-d', '--delete',
 
 args, command = parser.parse_known_args()
 action=""
-if command:
-    args.command = command
-    action="run"
+if args.autoconfig:
+    import autoconfig
+    ac = autoconfig.Autoconfig()
+    ac.ask_user()
+    ac.replace_config_file()
+    sys.exit()
 else:
-    if args.find:
-        action="find"
-        args.command = args.find
-    elif args.add:
-        action="add"
-        args.command = args.add
-    elif args.delete:
-        action="delete"
-        args.command = args.delete
+    if command:
+        args.command = command
+        action="run"
+    else:
+        if args.find:
+            action="find"
+            args.command = args.find
+        elif args.add:
+            action="add"
+            args.command = args.add
+        elif args.delete:
+            action="delete"
+            args.command = args.delete
 
 try:
     command_line = CommandLine(args.commands_file, action, args.command)

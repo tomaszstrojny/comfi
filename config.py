@@ -16,4 +16,4 @@ types = {
     "configfile":editor
 }
 #if first_run is set to 1 then comfi will run autoconfig module and set first_run to 0
-first_run=True
+first_run=False
