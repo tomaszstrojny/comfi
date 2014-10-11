@@ -9,9 +9,8 @@ class DataAccess:
         except:
             raise IOError
 
-    def find(self, *params):
+    def find(self, params):
         """function which looks for command depending on params"""
-        params=list(params)
         command=self.data
         i = 0
         try:
@@ -28,7 +27,7 @@ class DataAccess:
             return command
         except:
             print("Cannot find command matching to those parameters: %s" % params)
-            raise StandardError
+            raise
 
     def add(self, command, *params):
         print("Adding command")                                     #TODO

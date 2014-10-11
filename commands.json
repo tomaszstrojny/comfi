@@ -1,5 +1,5 @@
 {
-    "FreeBSD 9.1": {
+    "FreeBSD 9": {
         "apache22": {
             "restart": {
                 "comment": "Command to restart Apache22 server",

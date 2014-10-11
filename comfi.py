@@ -1,18 +1,29 @@
-import sys                          #needed to start shell commands from python
+import os                           #needed to start shell commands from python
 import argparse                     #parsing commandline arguments
 import config                       #import config.py file
 import dataaccess                   #class which is responsible for manipulating the commands_file
 import autoconfig                   #class which can determine some important things and create config file
 
 class CommandLine:
-    def __init__(self, commands_file, what_to_do, command):
-        self.commands_file = commands_file
-        self.what_to_do = what_to_do
+    def __init__(self, commands_file, action, command):
+        self.action = action
         self.command = command
-        self.data_access = dataaccess.DataAccess()
-                                                                            #TODO do you want to create new commandsfile?\
+        self.command.insert(0,config.system)
+
+        try:
+            self.data_access = dataaccess.DataAccess(commands_file)
+        except:
+            raise
+
+        cases = {"find"   : self.find_command,
+                 "add"    : self.add_command,
+                 "delete" : self.del_command,
+                 "run"    : self.run_command,
+                }
+        cases[action]()
+
     def find_command(self):
-        pass
+        print(self.data_access.find(self.command))
 
     def add_command(self):
         pass
@@ -21,8 +32,7 @@ class CommandLine:
         pass
 
     def run_command(self):
-        os.system(self.command)
-
+        os.system(self.data_access.find(self.command))
 
 parser = argparse.ArgumentParser(description='Comfortable configurator.')
 parser.add_argument('--autoconfig', action='store_true', dest='autoconfig',
@@ -46,8 +56,10 @@ parser.add_argument('-d', '--delete',
                     help='Delete command that was found using remaining parameters')
 
 args, command = parser.parse_known_args()
+action=""
 if command:
     args.command = command
+    action="run"
 else:
     if args.find:
         action="find"
@@ -58,9 +70,18 @@ else:
     elif args.delete:
         action="delete"
         args.command = args.delete
-    else:
-        action="run"
 
-print (action," ", args.command)
+try:
+    command_line = CommandLine(args.commands_file, action, args.command)
+except IOError:
+    print("Comfi encountered problems with commands file:\n")
+    raise
+except AttributeError:
+    print("Comfi encountered problems with parameters:\n")
+    raise
+except:
+    print("Comfi stopped working because of:\n")
+    raise
+
 
 

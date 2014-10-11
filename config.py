@@ -1,4 +1,4 @@
-system="FreeBSD 9.1"
+system="FreeBSD 9"
 commands_file="commands.json"
 editor="vim"
 
