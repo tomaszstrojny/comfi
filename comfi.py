@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 import os  # needed to start shell commands from python
 import argparse  # parsing commandline arguments
 import sys
@@ -60,7 +61,7 @@ if __name__ == "__main__":
         print("You will be able to change those settings in ./config.py file.")
 
         ac = autoconfig.Autoconfig()
-        #ac.replace_config_file()
+        ac.replace_config_file()
         config = reload(config)
 
     parser = argparse.ArgumentParser(description = 'Comfortable configurator.')

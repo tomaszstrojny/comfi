@@ -30,7 +30,8 @@ class Autoconfig:
                     version = system[:-1]
             system_type = "\"" + system + " " + version + "\""
         except:
-            print("No(t known) Linux")
+            #print("No(t known) Linux")
+            print("")
 
         for system in self.data_access.supported_systems():     #BSD check
             if os.uname()[0] + " " + os.uname()[2].split('.')[0] == system:
