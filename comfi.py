@@ -18,10 +18,10 @@ class CommandLine:
         except:
             raise
 
-        cases = {"find"   : self.find_command,
-                 "add"    : self.add_command,
+        cases = {"find" : self.find_command,
+                 "add" : self.add_command,
                  "delete" : self.del_command,
-                 "run"    : self.run_command,
+                 "run" : self.run_command,
                 }
         cases[action]()
 
@@ -39,6 +39,10 @@ class CommandLine:
 
 
 if __name__ == "__main__":
+    if config.first_run:
+        ac = autoconfig.Autoconfig()
+        ac.replace_config_file()
+        config = reload(config)
     parser = argparse.ArgumentParser(description='Comfortable configurator.')
     parser.add_argument('--autoconfig', action='store_true', dest='autoconfig',
                         default=config.first_run,
@@ -63,12 +67,10 @@ if __name__ == "__main__":
     args, command = parser.parse_known_args()
     action = ""
     if args.autoconfig:
-        import autoconfig
-
         ac = autoconfig.Autoconfig()
         ac.ask_user()
         ac.replace_config_file()
-        sys.exit()
+        config = reload(config)
     else:
         if command:
             args.command = command
