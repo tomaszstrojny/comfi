@@ -60,8 +60,8 @@ class Autoconfig:
         for line in cf:                  #I am quite sure there is a better (more pythonic) way to do it
             if not re.search("^#",line):
                 for k,v in self.configs.iteritems():
-                    if k+"=" in line:
-                        line = k + "=" + v + "\n"
+                    if k+" =" in line:
+                        line = k + " = " + v + "\n"
             newlines.append(line)
         outfile = file("config.py", 'w')
         outfile.writelines(newlines)
