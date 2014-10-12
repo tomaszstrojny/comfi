@@ -20,11 +20,14 @@ class DataAccess:
                 else:
                     command = command[params[i]]
                     i = i + 1
-            for command_type, command_prefix in config.types.items():
-                if command_type.decode('utf-8') == command['type']:
-                    command = command_prefix + " " + command[command_type]
-                    break
-            return command
+            return_list = []
+            return_list.append(command['type'])
+            return_list.append(command[command['type']])
+            #for command_type, command_prefix in config.types.items():
+            #    if command_type.decode('utf-8') == command['type']:
+            #        command = command_prefix + " " + command[command_type]
+            #        break
+            return return_list
         except:
             print("Cannot find command matching to those parameters: %s" % params)
             raise

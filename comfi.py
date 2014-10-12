@@ -8,17 +8,19 @@ import autoconfig                   #class which can determine some important th
 
 
 class CommandLine:
-    def __init__(self, commands_file, action, command):
+    def __init__(self, commands_file, action, parameters):
         self.action = action
-        self.command = command
-        self.command.insert(0, config.system)
-
         try:
             self.data_access = dataaccess.DataAccess(commands_file)
         except:
             raise
+        self.parameters = parameters
 
-        cases = {"find" : self.find_command,
+        self.command = parameters               #parameters to find command
+        self.command.insert(0, config.system)   #adding first parameter - system name
+        self.command = self.find_command()      #finding command in commands_file
+
+        cases = {"find" : self.print_command,
                  "add" : self.add_command,
                  "delete" : self.del_command,
                  "run" : self.run_command,
@@ -26,7 +28,22 @@ class CommandLine:
         cases[action]()
 
     def find_command(self):
-        print(self.data_access.find(self.command))
+        command = self.data_access.find(self.command)
+
+        for command_type, command_prefix in config.types.items():
+            if command_type.decode('utf-8') == command[0] and command_prefix:
+                command = command_prefix + " " + command[1]
+                break
+            else:
+                command = command[1]
+                break
+
+        if config.sudoEnable:
+            command = "sudo " + command
+        return command
+
+    def print_command(self):
+        print(self.command)
 
     def add_command(self):
         pass
@@ -35,34 +52,33 @@ class CommandLine:
         pass
 
     def run_command(self):
-        os.system(self.data_access.find(self.command))
-
+        os.system(self.command)
 
 if __name__ == "__main__":
     if config.first_run:
         ac = autoconfig.Autoconfig()
         ac.replace_config_file()
         config = reload(config)
-    parser = argparse.ArgumentParser(description='Comfortable configurator.')
-    parser.add_argument('--autoconfig', action='store_true', dest='autoconfig',
-                        default=config.first_run,
-                        help='Run autoconfig script. Other parameters are omitted.')
+    parser = argparse.ArgumentParser(description = 'Comfortable configurator.')
+    parser.add_argument('--autoconfig', action = 'store_true', dest = 'autoconfig',
+                        default = config.first_run,
+                        help = 'Run autoconfig script. Other parameters are omitted.')
 
-    parser.add_argument('-c', '--commands-file', dest='commands_file',
-                        default=config.commands_file,
-                        help='Override the path of commands file')
+    parser.add_argument('-c', '--commands-file', dest = 'commands_file',
+                        default = config.commands_file,
+                        help = 'Override the path of commands file')
 
     parser.add_argument('-f', '--find',
-                        nargs=argparse.REMAINDER,
-                        help='Edit command that was found using remaining parameters')
+                        nargs = argparse.REMAINDER,
+                        help = 'Edit command that was found using remaining parameters')
 
     parser.add_argument('-a', '--add',
-                        nargs=argparse.REMAINDER,
-                        help='Add command that is going to be found using remaining parameters')
+                        nargs = argparse.REMAINDER,
+                        help = 'Add command that is going to be found using remaining parameters')
 
     parser.add_argument('-d', '--delete',
-                        nargs=argparse.REMAINDER,
-                        help='Delete command that was found using remaining parameters')
+                        nargs = argparse.REMAINDER,
+                        help = 'Delete command that was found using remaining parameters')
 
     args, command = parser.parse_known_args()
     action = ""

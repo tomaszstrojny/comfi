@@ -62,3 +62,6 @@ target/
 
 # BackUped files
 *.old
+
+# My config file
+config.py
