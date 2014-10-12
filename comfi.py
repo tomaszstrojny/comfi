@@ -66,6 +66,11 @@ if __name__ == "__main__":
 
     args, command = parser.parse_known_args()
     action = ""
+
+    if len(sys.argv) == 1:
+        print(parser.format_help())
+        sys.exit(1)
+
     if args.autoconfig:
         ac = autoconfig.Autoconfig()
         ac.ask_user()
