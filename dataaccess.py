@@ -1,10 +1,12 @@
 import json
+import os
 import config
 
 class DataAccess:
     def __init__(self, commands_file=config.commands_file):
+        self.mydir = os.path.dirname(__file__) + "/"
         try:
-            self.data = json.load(open(commands_file))
+            self.data = json.load(file(commands_file))
         except:
             raise IOError
 

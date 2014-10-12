@@ -6,10 +6,14 @@ import dataaccess
 class Autoconfig:
     def __init__(self):
         try:
+            if not os.path.isfile(config.commands_file):
+                open(config.commands_file, 'w+')
+
             self.data_access = dataaccess.DataAccess(config.commands_file)
         except:
             raise
 
+        self.mydir = os.path.dirname(__file__) + "/"
         self.system = self.determine_os()
         self.username = self.determine_username()
         self.editor = self.determine_editor()
@@ -58,13 +62,13 @@ class Autoconfig:
 
     def backup_config_file (self):
         import shutil
-        shutil.copyfile("config.py","config.py.old")
+        shutil.copyfile(self.mydir + "config.py", self.mydir +  "config.py.old")
         print("Config file backuped to config.py.old")
 
     def make_configs (self):
         self.configs= {"first_run" : "False",
                        "system" : self.system,
-                       "commands_file" : "\"commands.json\"",
+                       "commands_file" : "\"" + self.mydir + "commands.json\"",
                        "editor" : self.editor
                       }
         if self.username != "root":
@@ -77,7 +81,7 @@ class Autoconfig:
         self.backup_config_file()
 
         #replace configs in file
-        cf = file("config.py.old")
+        cf = file(self.mydir + "config.py.old")
         newlines = []
         for line in cf:                  #I am quite sure there is a better (more pythonic) way to do it
             if not re.search("^#",line):
@@ -85,6 +89,6 @@ class Autoconfig:
                     if k+" =" in line:
                         line = k + " = " + v + "\n"
             newlines.append(line)
-        outfile = file("config.py", 'w')
+        outfile = file(self.mydir + "config.py", 'w')
         outfile.writelines(newlines)
 

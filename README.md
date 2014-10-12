@@ -15,11 +15,15 @@ My goal is to create a tool to use on variety of servers which helps you with:
 You can config almost everything in `commands_file` (default: `commands.json`) and `config.py`.
 
 #### How To
-Using Comfi you will be able to run for example:
+For now it is important to add directory you download comfi to your $PATH variable. After that it is able to run systemwide.
+
+Comfi is able to open apache22 main config file with your favourite editor.
+
+For example:
 
 `comfi apache22 config main`
 
-And depending on system you have installed it will run suitable command that is assigned to it in commands file.
+will run suitable command that is assigned to it in commands file depending on OS you are using.
 
 For FreeBSD 9.1 this will run:
 
