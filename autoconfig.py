@@ -1,24 +1,45 @@
 import config
 import os
 import re
+import dataaccess
 
 class Autoconfig:
     def __init__(self):
-        if config.first_run:
-            print("\nFirst run, running autoconfig")
-            print("You will be able to change those settings in ./config.py file.")
+        try:
+            self.data_access = dataaccess.DataAccess(config.commands_file)
+        except:
+            raise
 
-        self.system=self.determine_os()
-        self.username=self.determine_username()
-        self.editor=self.determine_editor()
-        self.configs={}
+        self.system = self.determine_os()
+        self.username = self.determine_username()
+        self.editor = self.determine_editor()
+        self.configs = {}
         self.make_configs()
 
     def determine_os(self):
         """Function which determines type and version of your system"""
-        if os.uname()[0] + " " + os.uname()[2].split('.')[0] == "FreeBSD 9":
-            return "\"FreeBSD 9\""
-        return "\"Unknown\""
+        system_type=""
+        try:                                        #Linux check
+            release_file = file("/etc/os-release")
+            for line in release_file:
+                if re.search("^NAME", line):
+                    system = line.split("=")[-1]
+                    system = system[:-1]
+                elif re.search("^VERSION_ID",line):
+                    version = line.split("=")[-1]
+                    version = system[:-1]
+            system_type = "\"" + system + " " + version + "\""
+        except:
+            print("No(t known) Linux")
+
+        for system in self.data_access.supported_systems():     #BSD check
+            if os.uname()[0] + " " + os.uname()[2].split('.')[0] == system:
+                system_type = "\"" + system + "\""
+
+        if not system_type:
+            system_type = "\"Unknown\""
+
+        return system_type
 
     def determine_username(self):
         p = os.popen('whoami',"r")

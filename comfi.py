@@ -56,9 +56,13 @@ class CommandLine:
 
 if __name__ == "__main__":
     if config.first_run:
+        print("\nFirst run, running autoconfig")
+        print("You will be able to change those settings in ./config.py file.")
+
         ac = autoconfig.Autoconfig()
-        ac.replace_config_file()
+        #ac.replace_config_file()
         config = reload(config)
+
     parser = argparse.ArgumentParser(description = 'Comfortable configurator.')
     parser.add_argument('--autoconfig', action = 'store_true', dest = 'autoconfig',
                         default = config.first_run,

@@ -3,9 +3,8 @@ import config
 
 class DataAccess:
     def __init__(self, commands_file=config.commands_file):
-        self.commands_file = commands_file
         try:
-            self.data = json.load(open(self.commands_file))
+            self.data = json.load(open(commands_file))
         except:
             raise IOError
 
@@ -23,10 +22,6 @@ class DataAccess:
             return_list = []
             return_list.append(command['type'])
             return_list.append(command[command['type']])
-            #for command_type, command_prefix in config.types.items():
-            #    if command_type.decode('utf-8') == command['type']:
-            #        command = command_prefix + " " + command[command_type]
-            #        break
             return return_list
         except:
             print("Cannot find command matching to those parameters: %s" % params)
@@ -37,3 +32,9 @@ class DataAccess:
 
     def delete(self, *params):
         print("Deleting command")
+
+    def supported_systems (self):
+        systems_list = []
+        for k,v in self.data.iteritems():
+            systems_list.append(k)
+        return systems_list
