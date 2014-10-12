@@ -4,6 +4,7 @@ import sys
 
 import config  # import config.py file
 import dataaccess  # class which is responsible for manipulating the commands_file
+import autoconfig                   #class which can determine some important things and create config file
 
 
 class CommandLine:
@@ -17,11 +18,11 @@ class CommandLine:
         except:
             raise
 
-        cases = {"find": self.find_command,
-                 "add": self.add_command,
-                 "delete": self.del_command,
-                 "run": self.run_command,
-        }
+        cases = {"find"   : self.find_command,
+                 "add"    : self.add_command,
+                 "delete" : self.del_command,
+                 "run"    : self.run_command,
+                }
         cases[action]()
 
     def find_command(self):
