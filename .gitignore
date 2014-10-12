@@ -55,3 +55,7 @@ target/
 
 # VimSwap
 *.swp
+
+# JetBrains
+*.iml
+.idea/
