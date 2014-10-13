@@ -20,14 +20,11 @@ class DataAccess:
                     break
                 else:
                     command = command[params[i]]
-                    i = i + 1
-            return_list = []
-            return_list.append(command['type'])
-            return_list.append(command[command['type']])
-            return return_list
-        except:
+                    i += 1
+            return [command['type'], command[command['type']]]
+        except Exception as e:
             print("Cannot find command matching to those parameters: %s" % params)
-            raise
+            raise e
 
     def add(self, command, *params):
         print("Adding command")                                     #TODO
