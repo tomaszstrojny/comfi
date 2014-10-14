@@ -2,6 +2,7 @@ import json
 import os
 import config
 
+
 class DataAccess:
     def __init__(self, commands_file=config.commands_file):
         self.mydir = os.path.dirname(__file__) + "/"
@@ -12,7 +13,7 @@ class DataAccess:
 
     def find(self, params):
         """function which looks for command depending on params"""
-        command=self.data
+        command = self.data
         i = 0
         try:
             while type(command) == dict:
@@ -20,14 +21,11 @@ class DataAccess:
                     break
                 else:
                     command = command[params[i]]
-                    i = i + 1
-            return_list = []
-            return_list.append(command['type'])
-            return_list.append(command[command['type']])
-            return return_list
-        except:
+                    i += 1
+            return [command['type'], command[command['type']]]
+        except Exception as e:
             print("Cannot find command matching to those parameters: %s" % params)
-            raise
+            raise e
 
     def add(self, command, *params):
         print("Adding command")                                     #TODO
@@ -35,8 +33,8 @@ class DataAccess:
     def delete(self, *params):
         print("Deleting command")
 
-    def supported_systems (self):
+    def supported_systems(self):
         systems_list = []
-        for k,v in self.data.iteritems():
+        for k, v in self.data.iteritems():
             systems_list.append(k)
         return systems_list
